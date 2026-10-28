@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f8fb" />
+    <meta name="description" content="A lightweight preview of experimental AI-writing pattern analysis." />
+    <title>TextScan — AI writing pattern analysis</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111827'/%3E%3Cpath d='M9 11h14M16 11v11' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/styles.css?v=__CSS_V__" />
+    <style>
+      #analysis-results[hidden]{display:none}
+      .sentence-item{content-visibility:auto;contain-intrinsic-size:auto 88px}
+    </style>
+    <script src="/app.js?v=__JS_V__" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#top" aria-label="TextScan home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="32" height="32" fill="none">
+              <path d="M6 9.5A3.5 3.5 0 0 1 9.5 6h13A3.5 3.5 0 0 1 26 9.5v13a3.5 3.5 0 0 1-3.5 3.5h-13A3.5 3.5 0 0 1 6 22.5v-13Z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M11 12h10M16 12v9m-3 0h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="23.5" cy="8.5" r="2.5" fill="#a5e4d1" stroke="#fff" stroke-width="1.5" />
+            </svg>
+          </span>
+          <span>TextScan</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#scan">AI detector</a>
+          <a href="#examples">Examples</a>
+          <a href="#about">About</a>
+        </nav>
+
+        <a class="header-action" href="#scan">Try it <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="intro" id="top" aria-labelledby="page-title">
+        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> AI writing pattern analysis</div>
+        <h1 id="page-title">A clearer first look<br class="desktop-break" /> at your writing.</h1>
+        <p class="intro-copy">Paste a passage or start with an example. The backend streams sentence results as they are calculated, while your browser stays responsive.</p>
+      </section>
+
+      <section class="scanner" id="scan" aria-labelledby="scan-title">
+        <div class="scanner-topline">
+          <div class="scanner-heading">
+            <span class="scanner-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+                <path d="M8 4H5a1 1 0 0 0-1 1v3m12-4h3a1 1 0 0 1 1 1v3M4 16v3a1 1 0 0 0 1 1h3m12-4v3a1 1 0 0 1-1 1h-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+                <path d="M8 12h8m-8-3h5m-5 6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div>
+              <h2 id="scan-title">Check your text</h2>
+              <p>Paste or type below to get started</p>
+            </div>
+          </div>
+          <span class="local-badge"><span aria-hidden="true"></span> Server-side analysis</span>
+        </div>
+
+        <label class="visually-hidden" for="writing-input">Text to check</label>
+        <textarea id="writing-input" name="writing" maxlength="12000" autocomplete="off" aria-describedby="character-count" placeholder="Paste your text here, or write something new…" spellcheck="true"></textarea>
+
+        <div class="editor-footer">
+          <p class="character-count" id="character-count" aria-live="polite">0 / 12,000 characters</p>
+          <span class="paste-hint">Sent to the backend; avoid sensitive text</span>
+        </div>
+
+        <div class="examples-row" id="examples">
+          <div class="examples-label">Try an example</div>
+          <div class="example-buttons" role="group" aria-label="Example texts">
+            <button class="example-button" type="button" data-example="article">Short article</button>
+            <button class="example-button" type="button" data-example="formal">Formal paragraph</button>
+            <button class="example-button" type="button" data-example="casual">Casual note</button>
+          </div>
+        </div>
+
+        <div class="scan-row">
+          <p class="scan-note" id="scan-note">Experimental pattern score, not a calibrated probability.</p>
+          <button class="scan-button" id="scan-button" type="button" aria-describedby="scan-note">
+            <span>Scan Text</span>
+            <svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+        <p class="scan-status" id="scan-status" role="status" aria-live="polite"></p>
+        <noscript><p class="scan-status is-error">TextScan needs JavaScript to run an analysis.</p></noscript>
+      </section>
+
+      <section class="results" id="analysis-results" aria-labelledby="results-title" hidden>
+        <h2 id="results-title">Analysis</h2>
+        <dl class="metrics">
+          <div><dt>Pattern score</dt><dd id="pattern-score">—</dd></div>
+          <div><dt>Mean perplexity</dt><dd id="mean-perplexity">—</dd></div>
+          <div><dt>Length variation</dt><dd id="length-variation">—</dd></div>
+          <div><dt>Sentences</dt><dd id="sentence-count">—</dd></div>
+          <div><dt>Words</dt><dd id="word-count">—</dd></div>
+        </dl>
+        <p class="sample-note" id="sample-note"></p>
+        <p class="stream-progress" id="stream-progress" role="status" aria-live="polite"></p>
+        <ol class="sentence-list" id="sentence-list"></ol>
+        <p class="model-note" id="model-note"></p>
+      </section>
+
+      <section class="about-note" id="about" aria-label="About this analysis">
+        <span class="info-mark" aria-hidden="true">i</span>
+        <p>This experimental signal reflects model predictability and sentence-length variation. It is not calibrated to determine who wrote a text and should not be used as proof or for consequential decisions. Results can mislabel human writing; avoid submitting sensitive content.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="footer-brand" href="#top">TextScan</a>
+      <span>Simple tools for clearer writing.</span>
+      <span class="footer-status"><span aria-hidden="true"></span> Inference runs server-side</span>
+    </footer>
+  </body>
+</html>
